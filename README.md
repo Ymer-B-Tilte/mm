@@ -1,82 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MadeByZzerud^-^</title>
 </head>
 <body>
-    <form action="action_page.php">
-        <div class="container">
-          <h1>Регистрация</h1>
+  <textarea id = "username" placeholder="Введите имя"></textarea>
+  <textarea id = "password" placeholder="Введите пароль"></textarea>
+  <button onclick="register()">Register</button>
+  <button onclick="login()">Login</button>
 
-          <label for="email"><b></b></label>
-          <input type="text" placeholder="Введите электронную почту" name="email" required>
-      
-          <label for="psw"><b>Пароль</b></label>
-          <input type="Пароль" placeholder="Ввести пароль" name="psw" required>
-      
-          <label for="psw-repeat"><b>Повторите пароль</b></label>
-          <input type="Пароль" placeholder="Повторите пароль" name="psw-repeat" required>
-      
-          <button type="submit" class="registerbtn">Регистрация</button>
-        </div>
-      
-        <div class="container signin">
-          <p>Имеете уже аккаунт? <a href="#">Войти</a>.</p>
-        </div>
-      </form>
-      <script>
-        let usernames = [];
-        let userpasswords = [];
+  <script type="text/javascript">
 
-        function Argister(){
-            let username = document.getElementById("username");
-            let userpassword = document.getElementById("password").value;
-            
-            let truefalse = 1;
-            let passwoedtrue = 0;
+  let usernames = JSON.parse(localStorage.getItem("usernames"))  [];
+    let passwords = JSON.parse(localStorage.getItem("passwords"))  [];
 
-            //username seiting
-            for(let i = 0; i <= usernames.length; i++){
-                if(username.value === usernames[i]){
-                    truefalse = 0;
-                }
-            }
+  function register() {
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
 
-            //password seiting
-            if(userpassword.length >= 4 && userpasswoed.length <= 12){
-                passwordtrue = 1;
-                
-            }
-            
+  //проверяем, взят ли юзернейм
+    let isUsernameTaken = usernames.includes(username);
+  //проверяем, валидный ли пароль
+    let isPasswordValid = password.length >= 4 && password.length <= 12;
 
-            if(truefalse == 1 && passwordtrue == 1){
-                usernames.push(username.value);
-                userpassword.push(userpassword);
-            }
-            else{
-                alert("Ошибка регистрации")
-            }
-            console.log(usernames, userpasswoeds)
-        }
+    if (!isUsernameTaken && isPasswordValid) {
+      usernames.push(username);
+      passwords.push(password);
+      localStorage.setItem("usernames", JSON.stringify(usernames));
+      localStorage.setItem("passwords", JSON.stringify(passwords));
+      alert("Регистрация завершена!");
+    } 
+  else {
+    if(isUsernameTaken){
+      alert("Регистрация не завершена. Ваше имя уже занято.");
+    }
+    else{
+      alert("Регистрация не завершена. Пароль не соответствует правильности, проверьте чтобы он был не меньше 4 и не больше 12 символов!");
+    }
+    }
+  }
 
-        function login(){
-            let username = document.getElementById("username");
-            let userpassword = document.getElementById("password").value;
+  function login() {
+    let username = document.getElementById("username").value;
+    let password = document.getElementById("password").value;
 
-            let truefalse = 0;
-            for(let i = 0; i <= usernames.length && i <+ userpasswords.length; i++){
-                if(username.value === usernames[i] && userpassword === userpasswords[i]){
-                    truefalse = 1;
-                }
-            }
-            if(truefalse === 1)
-                alert("Succes");
-            else
-                alert("Error");
-        }
-      </script>
+    let bool = 0;
+
+  for(let i = 0; i <= usernames.length && i <= passwords.length; i++){
+    if(username === usernames[i] && password === passwords[i]){
+      bool = 1;
+    }
+  }
+
+
+    if (bool === 1) {
+      alert("Успешный вход!");
+    } else {
+      alert("Вход не удался. Проверьте своё имя и пароль, возможно вам придется регистрироваться.");
+    }
+  }
+  </script>
 </body>
 </html>
